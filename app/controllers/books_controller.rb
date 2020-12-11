@@ -1,15 +1,25 @@
 class BooksController < ApplicationController
+  before_action :correct_user, only: [:edit, :update]
 
   def create
-    book = Book.new(book_params)
-    book.user_id = current_user.id
-    book.save
-    redirect_to book_path(book.id)
+    @book = Book.new(book_params)
+    @book.user_id = current_user.id
+  # 下記２行はrenderよう
+    @user = current_user
+    @books = Book.all
+    if @book.save
+      flash[:success] = "You have created book successfully."
+      redirect_to book_path(@book.id)
+    else
+      render :index
+    end
   end
 
   def index
     @books = Book.all
     @user = current_user
+  # エラーメッセージ用ダミー
+    @book = Book.first
   end
 
   def show
@@ -22,9 +32,13 @@ class BooksController < ApplicationController
   end
 
   def update
-    book = Book.find(params[:id])
-    book.update(book_update_params)
-    redirect_to book_path(book.id)
+    @book = Book.find(params[:id])
+    if @book.update(book_update_params)
+      flash[:success] = "You have edited book successfully."
+      redirect_to book_path(@book.id)
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -34,6 +48,13 @@ class BooksController < ApplicationController
   end
 
   private
+
+  def correct_user
+    book = Book.find(params[:id])
+    if current_user != book.user.id
+      redirect_to books_path
+    end
+  end
 
   def book_params
     params.permit(:title, :body)

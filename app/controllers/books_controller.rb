@@ -18,13 +18,13 @@ class BooksController < ApplicationController
   def index
     @books = Book.all
     @user = current_user
-  # エラーメッセージ用ダミー
-    @book = Book.first
+    @book = Book.new
   end
 
   def show
     @book = Book.find(params[:id])
     @user = @book.user
+    @new_book = Book.new
   end
 
   def edit
@@ -33,7 +33,7 @@ class BooksController < ApplicationController
 
   def update
     @book = Book.find(params[:id])
-    if @book.update(book_update_params)
+    if @book.update(book_params)
       flash[:success] = "You have edited book successfully."
       redirect_to book_path(@book.id)
     else
@@ -57,10 +57,6 @@ class BooksController < ApplicationController
   end
 
   def book_params
-    params.permit(:title, :body)
-  end
-
-  def book_update_params
     params.require(:book).permit(:title, :body)
   end
 

@@ -1,8 +1,8 @@
 # README
-# README
 
-## Bookers1
-[3-8] アプリケーションを作成してみよう：基礎編 の課題です。
+## Bookers
+[4-10] アプリケーションを作成してみよう：応用編 の課題です。
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 

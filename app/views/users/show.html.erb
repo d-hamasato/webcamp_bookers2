@@ -2,3 +2,8 @@
   <%= render 'layouts/sidebar_left', user: @user, book: @book %>
   <%= render 'books/book_index', books: @books %>
 </div>
+<div class="row">
+  <% @favorite_books.each do |book| %>
+    <p><span>ファボbook内容: </span><%= link_to book.title, book_path(book.id) %></p>
+  <% end %>
+</div>

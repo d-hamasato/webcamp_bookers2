@@ -14,8 +14,19 @@
     </tbody>
   </table>
   <div class="row">
-    <%= link_to "", edit_user_path(@user.id), class:"btn btn-outline-secondary btn-block fas fa-user-cog edit_user_7790" %>
+    <%= link_to "", edit_user_path(user.id), class:"btn btn-outline-secondary btn-block fas fa-user-cog edit_user_7790" %>
   </div>
+
+  <% if current_user != user %>
+  <div class="row">
+    <% if user.followed_by?(current_user) %>
+      <%= link_to "", user_relationships_path(user.id), class:"btn btn-outline-secondary btn-block fas fa-star", method: :delete %>
+    <% else %>
+      <%= link_to "", user_relationships_path(user.id), class:"btn btn-outline-secondary btn-block far fa-star", method: :post %>
+    <% end %>
+  </div>
+  <% end %>
+
   <h2 class="mt-3">New book</h2>
   <%= form_with model: book, local:true do |f| %>
     <div class="form-group">
